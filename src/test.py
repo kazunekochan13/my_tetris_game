@@ -1,10 +1,12 @@
 # script to test out features of the game
 
 import pygame
+from piece import piece
+from piece_coords import piece_coords
 
 pygame.init()
 screen_x = 504
-screen_y = 768
+screen_y = 756
 win = pygame.display.set_mode((screen_x, screen_y))
 
 # shapes reference
@@ -25,8 +27,6 @@ def draw_shapes():
 		pygame.draw.rect(win, (128, 0, 0), (block_x + z_coords[i][0], block_y + z_coords[i][1], block_width, block_width)) # basic square
 		pygame.draw.rect(win, (80, 0, 0), (block_x + z_coords[i][0], block_y + z_coords[i][1], block_width, block_width), 2) # basic dark outline
 		i += 1
-
-
 	
 def draw_background(): # drawing the stripe background
 	win.fill((0, 125, 125))
@@ -39,11 +39,13 @@ def draw_background(): # drawing the stripe background
 
 def draw():
 	draw_background()
-	draw_shapes()
+	shape.draw(win)
+	# draw_shapes()
 	pygame.display.update()
 
 clock = pygame.time.Clock()
 run = True
+shape = piece(block_x, block_y, block_width, piece_coords.z.value)
 while run:
 
 	clock.tick(30)
@@ -51,6 +53,12 @@ while run:
 	for event in pygame.event.get(): # checking for events
 		if event.type == pygame.QUIT:
 			run = False
+
+	keys = pygame.key.get_pressed()
+
+	if keys[pygame.K_a]: # move left
+		block_x -= block_width
+
 
 	draw()
 
