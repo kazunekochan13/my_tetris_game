@@ -9,9 +9,18 @@ win = pygame.display.set_mode((screen_x, screen_y))
 
 # shapes reference
 block_width = 42
-block_x = 252
+block_x = block_width * 6
 block_y = 256
 
+def draw_shapes():
+	i = 0
+	while i < 4:
+		b_x = block_x
+		b_y = block_y + (i * block_width)
+		pygame.draw.rect(win, (128, 0, 0), (b_x, b_y, block_width, block_width)) # basic square
+		pygame.draw.rect(win, (80, 0, 0), (b_x, b_y, block_width, block_width), 2) # basic dark outline
+		i += 1
+	
 def draw_background(): # drawing the stripe background
 	win.fill((0, 125, 125))
 	i = 0
@@ -23,7 +32,7 @@ def draw_background(): # drawing the stripe background
 
 def draw():
 	draw_background()
-	#pygame.draw.rect(win, ())
+	draw_shapes()
 	pygame.display.update()
 
 clock = pygame.time.Clock()
