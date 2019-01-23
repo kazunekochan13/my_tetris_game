@@ -15,9 +15,8 @@ class piece():
 			pygame.draw.rect(win, (80, 0, 0), (self.x + (self.coords[i][0] * self.width), self.y + (self.coords[i][1] * self.width), self.width, self.width), 2) # basic dark outline
 			i += 1
 
-	def update(self, x, y, is_skip=False):
-		if not(is_skip):
-			self.x += x
-			self.y += y
-		else: # skipped to the bottom
-			self.y += y
+	def update_left(self):
+		self.x -= self.width
+
+	def update_right(self):
+		self.x += self.width

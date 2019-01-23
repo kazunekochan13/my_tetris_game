@@ -43,23 +43,47 @@ def draw():
 	# draw_shapes()
 	pygame.display.update()
 
+def key_press():
+	for event in pygame.event.get():
+		if event.type == pygame.KEYDOWN:
+			print("keydown")
+			if event.key == pygame.K_a:
+				shape.update_left()
+				print("lefting")
+			elif event.key == pygame.K_d:
+				shape.update_right()
+				print("righting")
+	#keys = pygame.key.get_pressed()
+	#if keys[pygame.K_a] and key_loop == 0: # move left
+	#	shape.update_left()
+	#elif keys[pygame.K_d] and key_loop == 0:
+	#	shape.update_right()
+
+
 clock = pygame.time.Clock()
 run = True
 shape = piece(block_x, block_y, block_width, piece_coords.z.value)
+key_loop = 0
 while run:
 
 	clock.tick(30)
 
+	if key_loop > 0:
+		key_loop += 1
+	if key_loop > 100:
+		key_loop = 0
+
 	for event in pygame.event.get(): # checking for events
 		if event.type == pygame.QUIT:
 			run = False
-
-	keys = pygame.key.get_pressed()
-
-	if keys[pygame.K_a]: # move left
-		block_x -= block_width
-
-
+		elif event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_a:
+				shape.update_left()
+			elif event.key == pygame.K_d:
+				shape.update_right()
+		
+	#key_press()
+	
 	draw()
 
 pygame.quit()
