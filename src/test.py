@@ -67,7 +67,7 @@ def key_press(lkl, lst, rkl, rst):
 
 clock = pygame.time.Clock()
 run = True
-shape = piece(block_x, block_y, block_width, piece_coords.z.value)
+shape = piece(block_x, block_y, block_width, piece_coords.l0)
 while run:
 
 	clock.tick(30)
@@ -84,7 +84,7 @@ while run:
 			elif event.key == pygame.K_d:
 				shape.update_right()
 			elif event.key == pygame.K_SPACE:
-				print("rotate")
+				shape.rotate()
 		
 	# key_press(left_key_loop, left_start_time, right_key_loop, right_start_time)
 	
