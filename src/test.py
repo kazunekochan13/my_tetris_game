@@ -21,6 +21,12 @@ s_coords = [[-(block_width), block_width], [0, 0], [0, block_width], [block_widt
 t_coords = [[-(block_width), 0], [0, 0], [0, block_width], [block_width, 0]]
 z_coords = [[-(block_width), 0], [0, 0], [0, block_width], [block_width, block_width]]
 
+# keys reference: need to be global
+left_key_loop = False
+right_key_loop = False
+left_start_time = pygame.time.get_ticks()
+right_start_time = pygame.time.get_ticks()
+
 def draw_shapes():
 	i = 0
 	while i < 4:
@@ -43,46 +49,44 @@ def draw():
 	# draw_shapes()
 	pygame.display.update()
 
-def key_press():
-	for event in pygame.event.get():
-		if event.type == pygame.KEYDOWN:
-			print("keydown")
-			if event.key == pygame.K_a:
-				shape.update_left()
-				print("lefting")
-			elif event.key == pygame.K_d:
-				shape.update_right()
-				print("righting")
-	#keys = pygame.key.get_pressed()
-	#if keys[pygame.K_a] and key_loop == 0: # move left
-	#	shape.update_left()
-	#elif keys[pygame.K_d] and key_loop == 0:
-	#	shape.update_right()
+def key_press(lkl, lst, rkl, rst):
+	global left_key_loop, left_start_time
+	keys = pygame.key.get_pressed()
+	if keys[pygame.K_a]: # move left
+		if left_key_loop == False:
+			left_start_time = pygame.time.get_ticks()
+			left_key_loop = True
+			shape.update_left()
+		elif left_key_loop == True and (pygame.time.get_ticks() - left_start_time) >= 500:
+			left_key_loop = False
+			shape.update_left()
+		
+	elif keys[pygame.K_d] and not(rkl):
+		shape.update_right()
 
 
 clock = pygame.time.Clock()
 run = True
 shape = piece(block_x, block_y, block_width, piece_coords.z.value)
-key_loop = 0
 while run:
 
 	clock.tick(30)
 
-	if key_loop > 0:
-		key_loop += 1
-	if key_loop > 100:
-		key_loop = 0
-
 	for event in pygame.event.get(): # checking for events
 		if event.type == pygame.QUIT:
 			run = False
-		elif event.type == pygame.KEYDOWN:
+		#elif event.type == pygame.KEYUP:
+			#if event.key == pygame.K_a:
+				#left_key_loop = False
+		elif event.type == pygame.KEYUP:
 			if event.key == pygame.K_a:
 				shape.update_left()
 			elif event.key == pygame.K_d:
 				shape.update_right()
+			elif event.key == pygame.K_SPACE:
+				print("rotate")
 		
-	#key_press()
+	# key_press(left_key_loop, left_start_time, right_key_loop, right_start_time)
 	
 	draw()
 
