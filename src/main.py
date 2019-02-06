@@ -1,6 +1,7 @@
 import pygame
 from piece import piece
 from piece_coords import piece_coords
+from random import seed, randint
 
 def draw_background():
 	win.fill((0, 125, 125))
@@ -19,13 +20,30 @@ def draw():
 
 def update():
 	global piece_focus
-	if not(piece_focus.has_hit_bottom()):
-		piece_focus.update(2)
+
+	"""if not(piece_focus.has_hit_bottom()):
+		piece_focus.update_down(2)
 	else:
-		pieces.append(piece(block_x, 0, block_width, screen_x, screen_y, piece_coords.i0))
-		piece_focus = pieces[-1]
-		# create a new shape
-		pass
+		pieces.append(piece(block_x, 0, block_width, screen_x, screen_y, generate_random_piece()))
+		piece_focus = pieces[-1]"""
+
+def generate_random_piece():
+	rand = randint(0,7)
+	if rand == 0:
+		rand_piece = piece_coords.o0
+	elif rand == 1:
+		rand_piece = piece_coords.i0
+	elif rand == 2:
+		rand_piece = piece_coords.s0
+	elif rand == 3:
+		rand_piece = piece_coords.z0
+	elif rand == 4:
+		rand_piece = piece_coords.j0
+	elif rand == 5:
+		rand_piece = piece_coords.l0
+	else:
+		rand_piece = piece_coords.t0
+	return rand_piece
 
 pygame.init()
 screen_x = 504
@@ -34,6 +52,7 @@ win = pygame.display.set_mode((screen_x, screen_y))
 clock = pygame.time.Clock()
 run = True
 
+seed(1)
 block_width = 42
 block_x = block_width * 6
 block_y = 256
@@ -55,7 +74,7 @@ while run:
 			elif event.key == pygame.K_SPACE:
 				piece_focus.rotate()
 
-	#update()
+	update()
 	draw()
 
 pygame.quit()

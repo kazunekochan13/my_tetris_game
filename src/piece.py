@@ -1,5 +1,6 @@
 import pygame
 from piece_coords import piece_coords
+import math
 
 class piece():
 
@@ -11,14 +12,22 @@ class piece():
 		self.screen_height = screen_height
 		self.coords = coords
 		self.coords_list = coords.value
+		self.rect_list = []
+		for coord in coords.value:
+			self.rect_list.append(pygame.Rect((self.x + (coord[0] * self.width), self.y + (coord[1] * self.width), self.width, self.width)))
 		self.find_edges()
+		self.rad = math.radians(90) # rotation by 90 degrees. math functions only use radians
 
 	def draw(self, win):
+		for rect in self.rect_list:
+			pygame.draw.rect(win, (128, 0, 0), rect) # basic square
+			pygame.draw.rect(win, (80, 0, 0), rect, 2) # basic dark outline
+		"""	
 		i = 0
 		while i < 4:
 			pygame.draw.rect(win, (128, 0, 0), (self.x + (self.coords_list[i][0] * self.width), self.y + (self.coords_list[i][1] * self.width), self.width, self.width)) # basic square
 			pygame.draw.rect(win, (80, 0, 0), (self.x + (self.coords_list[i][0] * self.width), self.y + (self.coords_list[i][1] * self.width), self.width, self.width), 2) # basic dark outline
-			i += 1
+			i += 1"""
 
 	def find_left_edge(self):
 		self.left = self.x + (self.coords_list[0][0] * self.width)
@@ -49,18 +58,22 @@ class piece():
 	def has_hit_bottom(self):
 		return self.bottom >= self.screen_height
 
-	def update(self, y):
+	def update_down(self, y):
 		self.y += y
 		self.find_edges()
 
 	def update_left(self):
 		if self.left > 0:
-			self.x -= self.width
+			self.x -= self.width # going to be obsolete
+			for rect in self.rect_list:
+				rect.move_ip(-self.width, 0)
 			self.find_edges()
 
 	def update_right(self):
 		if self.right < self.screen_width:
-			self.x += self.width
+			self.x += self.width # going to be obsolete
+			for rect in self.rect_list:
+				rect.move_ip(self.width, 0)
 			self.find_edges()
 
 	def check_sides(self):
@@ -78,6 +91,17 @@ class piece():
 				run_right = False
 
 	def rotate(self):
+		for rect in self.rect_list:
+			rect.x -= self.x
+			rect.y -= self.y
+			x_new = rect.x * math.cos(self.rad) - rect.y * math.sin(self.rad)
+			y_new = rect.x * math.sin(self.rad) + rect.y * math.cos(self.rad)
+			rect.x = x_new + self.x
+			rect.y = y_new + self.y
+		self.find_edges()
+		self.check_sides()
+
+	def rotate_obsolete(self):
 		if not(self.coords.name == "o0"):
 
 			if self.coords.name == "i0":

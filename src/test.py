@@ -67,7 +67,7 @@ def key_press(lkl, lst, rkl, rst):
 
 clock = pygame.time.Clock()
 run = True
-shape = piece(block_x, block_y, block_width, piece_coords.l0)
+shape = piece(block_x, block_y, block_width, screen_x, screen_y, piece_coords.l0)
 while run:
 
 	clock.tick(30)
