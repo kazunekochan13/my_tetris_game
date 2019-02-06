@@ -16,16 +16,25 @@ def draw():
 	draw_background()
 	for shape in pieces:
 		shape.draw(win)
+	piece_focus.draw(win)
 	pygame.display.update()
 
 def update():
 	global piece_focus
-	
+	if piece_focus.has_collide(pieces) or piece_focus.has_hit_bottom():
+		add_new_piece()
+	else:
+		piece_focus.update_down(2)
 	"""if not(piece_focus.has_hit_bottom()):
 		piece_focus.update_down(2)
 	else:
 		pieces.append(piece(block_x, 0, block_width, screen_x, screen_y, generate_random_piece()))
 		piece_focus = pieces[-1]"""
+
+def add_new_piece():
+	global piece_focus
+	pieces.append(piece_focus)
+	piece_focus = piece(block_x, 0, block_width, screen_x, screen_y, generate_random_piece())
 
 def generate_random_piece():
 	rand = randint(0,7)
@@ -57,8 +66,7 @@ block_width = 42
 block_x = block_width * 6
 block_y = 256
 pieces = []
-pieces.append(piece(block_x, block_y, block_width, screen_x, screen_y, piece_coords.j))
-piece_focus = pieces[0]
+piece_focus = piece(block_x, block_y, block_width, screen_x, screen_y, piece_coords.j)
 while run:
 
 	clock.tick(30)
@@ -68,8 +76,10 @@ while run:
 			run = False
 		elif event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
+				# need to have collision code here
 				piece_focus.update_left()
 			elif event.key == pygame.K_RIGHT:
+				# need tp have collision code here
 				piece_focus.update_right()
 			elif event.key == pygame.K_DOWN:
 				# piece_focus.update_jump(pieces) # check collision with list of pieces on screen

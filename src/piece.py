@@ -43,6 +43,8 @@ class piece():
 
 	def update_down(self, y):
 		self.y += y
+		for rect in self.rect_list:
+			rect.move_ip(0, y)
 		self.find_edges()
 
 	def update_left(self):
@@ -84,3 +86,10 @@ class piece():
 			rect.y = y_new + self.y
 		self.find_edges()
 		self.check_sides()
+
+	def has_collide(self, pieces):
+		for rect in self.rect_list:
+			for piece in pieces:
+				if not(rect.collidelist(piece.rect_list) == -1):
+					return True
+		return False
