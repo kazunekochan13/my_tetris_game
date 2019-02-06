@@ -20,7 +20,7 @@ def draw():
 
 def update():
 	global piece_focus
-
+	
 	"""if not(piece_focus.has_hit_bottom()):
 		piece_focus.update_down(2)
 	else:
@@ -30,19 +30,19 @@ def update():
 def generate_random_piece():
 	rand = randint(0,7)
 	if rand == 0:
-		rand_piece = piece_coords.o0
+		rand_piece = piece_coords.o
 	elif rand == 1:
-		rand_piece = piece_coords.i0
+		rand_piece = piece_coords.i
 	elif rand == 2:
-		rand_piece = piece_coords.s0
+		rand_piece = piece_coords.s
 	elif rand == 3:
-		rand_piece = piece_coords.z0
+		rand_piece = piece_coords.z
 	elif rand == 4:
-		rand_piece = piece_coords.j0
+		rand_piece = piece_coords.j
 	elif rand == 5:
-		rand_piece = piece_coords.l0
+		rand_piece = piece_coords.l
 	else:
-		rand_piece = piece_coords.t0
+		rand_piece = piece_coords.t
 	return rand_piece
 
 pygame.init()
@@ -57,7 +57,7 @@ block_width = 42
 block_x = block_width * 6
 block_y = 256
 pieces = []
-pieces.append(piece(block_x, block_y, block_width, screen_x, screen_y, piece_coords.j0))
+pieces.append(piece(block_x, block_y, block_width, screen_x, screen_y, piece_coords.j))
 piece_focus = pieces[0]
 while run:
 
@@ -67,10 +67,13 @@ while run:
 		if event.type == pygame.QUIT:
 			run = False
 		elif event.type == pygame.KEYUP:
-			if event.key == pygame.K_a:
+			if event.key == pygame.K_LEFT:
 				piece_focus.update_left()
-			elif event.key == pygame.K_d:
+			elif event.key == pygame.K_RIGHT:
 				piece_focus.update_right()
+			elif event.key == pygame.K_DOWN:
+				# piece_focus.update_jump(pieces) # check collision with list of pieces on screen
+				pass
 			elif event.key == pygame.K_SPACE:
 				piece_focus.rotate()
 
