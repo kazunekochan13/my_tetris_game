@@ -4,7 +4,7 @@ import math
 
 class piece():
 
-	def __init__(self, x, y, width, screen_width, screen_height, coords):
+	def __init__(self, x, y, width, screen_width, screen_height, coords, rgb1, rgb2):
 		self.x = x
 		self.y = y
 		self.width = width
@@ -15,13 +15,15 @@ class piece():
 		self.rect_list = []
 		for coord in coords.value:
 			self.rect_list.append(pygame.Rect((self.x + (coord[0] * self.width), self.y + (coord[1] * self.width), self.width, self.width)))
+		self.rgb1 = rgb1
+		self.rgb2 = rgb2
 		self.find_edges()
 		self.rad = math.radians(90) # rotation by 90 degrees. math functions only use radians
 
 	def draw(self, win):
 		for rect in self.rect_list:
-			pygame.draw.rect(win, (128, 0, 0), rect) # basic square
-			pygame.draw.rect(win, (80, 0, 0), rect, 2) # basic dark outline
+			pygame.draw.rect(win, self.rgb1, rect) # basic square
+			pygame.draw.rect(win, self.rgb2, rect, 2) # basic dark outline
 
 	def find_edges(self):
 		self.left = self.rect_list[0].x
@@ -60,7 +62,6 @@ class piece():
 			for rect in self.rect_list:
 				rect.move_ip(self.width, 0)
 			self.find_edges()
-		print(self.right)
 
 	def check_sides(self):
 		run_left = True
